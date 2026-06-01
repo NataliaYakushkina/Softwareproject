@@ -1,0 +1,376 @@
+.seite {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 26px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-sm {
+  padding: 9px 18px;
+  font-size: 0.95rem;
+}
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+}
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-border);
+}
+.btn-ghost:hover {
+  border-color: var(--color-primary);
+  background: #fff;
+}
+.btn-light {
+  background: #fff;
+  color: var(--color-primary-dark);
+}
+
+/* ---------- Kopfzeile ---------- */
+.kopf {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(248, 250, 252, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+}
+.kopf-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+}
+.logo-icon {
+  font-size: 1.4rem;
+}
+.nav {
+  display: flex;
+  gap: 28px;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+.nav a:hover {
+  color: var(--color-text);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  background:
+    radial-gradient(1200px 400px at 80% -10%, rgba(13, 148, 136, 0.12), transparent),
+    var(--color-bg);
+  padding: 72px 0 88px;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+}
+.badge {
+  display: inline-block;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  color: var(--color-primary-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+.hero-text h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 20px 0 18px;
+}
+.akzent {
+  color: var(--color-primary);
+}
+.hero-lead {
+  font-size: 1.15rem;
+  color: var(--color-muted);
+  max-width: 30em;
+}
+.hero-cta {
+  display: flex;
+  gap: 14px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+/* Hero-Karte (Mockup) */
+.hero-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  padding: 22px;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.dot-r { background: #f87171; }
+.dot-y { background: #fbbf24; }
+.dot-g { background: #34d399; }
+.card-title {
+  margin-left: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.todo {
+  list-style: none;
+  padding: 18px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.todo li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+}
+.todo li.done {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+.check {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--color-primary);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+.check.open {
+  background: transparent;
+  border: 2px solid var(--color-border);
+}
+.card-foot {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+.fortschritt-text {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.balken {
+  margin-top: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+.balken-fill {
+  width: 50%;
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+
+/* ---------- Abschnitte allgemein ---------- */
+.abschnitt-titel {
+  text-align: center;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.01em;
+}
+.abschnitt-lead {
+  text-align: center;
+  color: var(--color-muted);
+  margin: 12px auto 0;
+  max-width: 36em;
+}
+
+/* ---------- Funktionen ---------- */
+.funktionen {
+  padding: 84px 0;
+}
+.karten {
+  margin-top: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px;
+}
+.karte {
+  flex: 0 1 260px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.karte:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.karte-icon {
+  font-size: 2rem;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ecfdf5;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+.karte h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+.karte p {
+  color: var(--color-muted);
+  font-size: 0.98rem;
+}
+
+/* ---------- Ablauf ---------- */
+.ablauf {
+  padding: 84px 0;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+.schritte {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.schritt {
+  text-align: center;
+}
+.schritt-nr {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.schritt h3 {
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+}
+.schritt p {
+  color: var(--color-muted);
+  max-width: 22em;
+  margin: 0 auto;
+}
+
+/* ---------- CTA-Band ---------- */
+.cta-band {
+  padding: 80px 0;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: #fff;
+}
+.cta-inner {
+  text-align: center;
+}
+.cta-inner h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+.cta-inner p {
+  margin: 12px 0 28px;
+  opacity: 0.92;
+  font-size: 1.1rem;
+}
+
+/* ---------- Fußzeile ---------- */
+.fuss {
+  margin-top: auto;
+  padding: 28px 0;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+}
+.fuss-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.fuss-text {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Responsiv ---------- */
+@media (max-width: 880px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero-card {
+    order: -1;
+  }
+  .schritte {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .nav {
+    display: none;
+  }
+  .hero {
+    padding: 48px 0 60px;
+  }
+}
