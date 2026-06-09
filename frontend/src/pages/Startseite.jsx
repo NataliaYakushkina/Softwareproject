@@ -12,6 +12,12 @@ const funktionen = [
     titel: 'Haushalt teilen',
     text: 'Mitbewohner einladen und gemeinsam den Überblick behalten.',
   },
+
+  {
+    icon: '⚙️',
+    titel: 'Einstellungen',
+    text: 'Haushaltseinstellungen anpassen und mehr.',
+  },
 ]
 
 
@@ -27,9 +33,7 @@ export default function Startseite() {
           </a>
           <nav className="nav">
             <a href="#funktionen">Funktionen</a>
-            <a href="#ablauf">So funktioniert&apos;s</a>
           </nav>
-          <button className="btn btn-primary btn-sm">Anmelden</button>
         </div>
       </header>
 
@@ -41,7 +45,7 @@ export default function Startseite() {
               <span className="badge">🎓 Softwareprojekt · HSHL</span>
               <h1>
                 Euer Haushalt,<br />
-                <span className="akzent">gemeinsam organisiert.</span>
+                <span className="akzent">gemeinsam organisiert</span>
               </h1>
               <p className="hero-lead">
                 Aufgaben erstellen und verteilen, den Überblick behalten —
@@ -62,9 +66,9 @@ export default function Startseite() {
                 <span className="card-title">Heute zu erledigen</span>
               </div>
               <ul className="todo">
-                <li className="done"><span className="check">✓</span> Müll rausbringen</li>
-                <li className="done"><span className="check">✓</span> Spülmaschine ausräumen</li>
-                <li><span className="check open"></span> Einkaufen — 4 Artikel</li>
+                <li className="done"><span className="check">✓</span> Müll rausbringen (Tom)</li>
+                <li className="done"><span className="check">✓</span> Spülmaschine ausräumen (Lena)</li>
+                <li><span className="check open"></span> Einkaufen — 4 Artikel (Max)</li>
                 <li><span className="check open"></span> Bad putzen (Lena)</li>
               </ul>
               <div className="card-foot">
@@ -102,7 +106,7 @@ export default function Startseite() {
           <span className="logo">
             <span className="logo-icon" aria-hidden="true">🏠</span> Haushalthelfer
           </span>
-          <span className="fuss-text">Softwareprojekt · HSHL · 2026</span>
+          <span className="fuss-text">Softwareprojekt · HSHL · SoSe · 2026</span>
         </div>
       </footer>
     </div>
