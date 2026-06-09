@@ -11,7 +11,7 @@ class Member {
     get memiD() {
         return this.memiD;
     }
-    get household() {
+    get householdID() {
         return this.household;
     }
     get joinedDate() {
