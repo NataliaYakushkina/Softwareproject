@@ -32,7 +32,12 @@ export default function Startseite() {
             <span>Haushalthelfer</span>
           </a>
           <nav className="nav">
-            <a href="#funktionen">Funktionen</a>
+            {/*<Link to="/aufgaben">Aufgaben</Link>  */} 
+            {/*<Link to="/aufgaben">Mitbewohner</Link>  */}
+            {/*<Link to="/aufgaben">Einstellungen</Link>  */}        
+            <a href="#">Aufgaben</a>
+            <a href="#">Mitbewohner</a>          
+            <a href="#">Einstellungen</a>
           </nav>
         </div>
       </header>
