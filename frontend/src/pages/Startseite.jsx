@@ -31,10 +31,7 @@ export default function Startseite() {
             <span className="logo-icon" aria-hidden="true">🏠</span>
             <span>Haushalthelfer</span>
           </a>
-          <nav className="nav">
-            {/*<Link to="/aufgaben">Aufgaben</Link>  */} 
-            {/*<Link to="/aufgaben">Mitbewohner</Link>  */}
-            {/*<Link to="/aufgaben">Einstellungen</Link>  */}        
+          <nav className="nav">       
             <a href="#">Aufgaben</a>
             <a href="#">Mitbewohner</a>          
             <a href="#">Einstellungen</a>
