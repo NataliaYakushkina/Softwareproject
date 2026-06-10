@@ -13,7 +13,7 @@ const VOLLE_NAMEN = {
 }
 const PERSONEN = ['Lena', 'Max', 'Anna', 'Tom']
 
-// Beispiel-Aufgaben zum Start (spaeter aus dem Backend)
+// Beispiel-Aufgaben zum Start
 const START_AUFGABEN = [
   { id: 1, titel: 'Müll rausbringen', person: 'Max', tag: 'Mo' },
   { id: 2, titel: 'Bad putzen', person: 'Lena', tag: 'Mi' },

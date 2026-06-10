@@ -66,6 +66,8 @@
   font-size: 1.4rem;
 }
 .nav {
+  display: flex;
+  gap: 28px;
   font-weight: 600;
   color: var(--color-primary-dark);
 }
