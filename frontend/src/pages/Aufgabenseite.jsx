@@ -58,7 +58,12 @@ export default function Aufgabenseite() {
             <span>Haushalthelfer</span>
           </a>
           <nav className="nav">
+            {/*<Link to="/aufgaben">Aufgaben</Link>  */} 
+            {/*<Link to="/aufgaben">Mitbewohner</Link>  */}
+            {/*<Link to="/aufgaben">Einstellungen</Link>  */}        
             <a href="#">Aufgaben</a>
+            <a href="#">Mitbewohner</a>          
+            <a href="#">Einstellungen</a>
           </nav>
         </div>
       </header>
