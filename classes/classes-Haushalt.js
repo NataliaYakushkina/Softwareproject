@@ -5,18 +5,6 @@ class Member {
         this.household = pHausID;
         this.joined = pDate;
     }
-    get name() {
-        return this.name;
-    }
-    get memiD() {
-        return this.memiD;
-    }
-    get householdID() {
-        return this.household;
-    }
-    get joinedDate() {
-        return this.joined;
-    }
 }
 
 class Admin extends Member {
