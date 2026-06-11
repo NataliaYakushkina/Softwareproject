@@ -26,42 +26,12 @@ class Task {
         this.createdat = pCreateAt;
         this.completedat = pCompleteAt;  
     }
-    get taskID() {
-        return this.taskID;
-    }
-    get title() {
-        return this.title;
-    }
-    get description() {
-        return this.description;
-    }
-    get status() {
-        return this.status;
-    }
-    get week() {
-        return this.week;
-    }
-    get assignmenedTo() {
-        return this.assignmenedto;
-    }
-    get createdBy() {
-        return this.createdby;
-    }
-    get createdAt() {
-        return this.createdat;
-    }
-    get completedAt() {
-        return this.completedat;
-    }
 }
 
 class HouseholdSettings {
     constructor(pID, pName){
         this.household = pID;
         this.housename = pName;
-    }
-    get name() {
-        return this.housename;
     }
 }
 
@@ -70,11 +40,5 @@ class Household {
         this.household = pID;
         this.housename = pName;
         this.createdat = pCreateAt;
-    }
-    get housename() {
-        return this.housename;
-    }
-    get createdAt() {
-        return this.createdat;
     }
 }
