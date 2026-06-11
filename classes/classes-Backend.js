@@ -17,8 +17,17 @@ class MemberRepository {
         this.memberList.push(pMember);
     }
     delete(pID){
-        this.findByID;
-        this.memberList.pop();
+        const a = this.memberList;
+        const b = [];
+        for(let i = 0; i <= this.memberList.at(-1); i++)
+            if(this.memberList.at(i).memID == pID){
+                for(let j = i; i < this.memberList.at(-1); i++)
+                    b.push(this.memberList.at(i))
+                for(j; j >= i; j--)
+                    this.memberList.pop();
+                for(i; i <= b.at(-1); i++)
+                    this.memberList.push(b.at(i));
+            }
     }
 }
 
