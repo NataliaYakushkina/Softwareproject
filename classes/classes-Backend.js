@@ -33,7 +33,8 @@ class MemberRepository {
 
 class MemberController {
     getMembers(){
-        return;
+        const list = new MemberRepository;
+        return list.memberList;
     }
     createMember(pName, pID, pHausID, pDate){
         const member = new Member(pName, pID, pHausID, pDate);
