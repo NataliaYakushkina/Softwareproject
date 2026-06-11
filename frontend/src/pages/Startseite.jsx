@@ -1,21 +1,25 @@
+import { Link } from 'react-router-dom'
 import './Startseite.css'
 
 const funktionen = [
   {
     icon: '📋',
     titel: 'Aufgaben',
+    link: '/aufgaben',
     text: 'Wer macht was? Aufgaben erstellen, einem Mitbewohner zuweisen und abhaken.',
   },
   
   {
     icon: '👥',
     titel: 'Haushalt teilen',
+    link: '/mitbewohner',
     text: 'Mitbewohner einladen und gemeinsam den Überblick behalten.',
   },
 
   {
     icon: '⚙️',
     titel: 'Einstellungen',
+    link: '/einstellungen',
     text: 'Haushaltseinstellungen anpassen und mehr.',
   },
 ]
@@ -27,14 +31,14 @@ export default function Startseite() {
       {/* Kopfzeile */}
       <header className="kopf">
         <div className="container kopf-inner">
-          <a className="logo" href="#start">
+          <Link className="logo" to="/">
             <span className="logo-icon" aria-hidden="true">🏠</span>
             <span>Haushalthelfer</span>
-          </a>
+          </Link>
           <nav className="nav">       
-            <a href="#">Aufgaben</a>
-            <a href="#">Mitbewohner</a>          
-            <a href="#">Einstellungen</a>
+            <Link to="/aufgaben">Aufgaben</Link>
+            <Link to="/mitbewohner">Mitbewohner</Link>          
+            <Link to="/einstellungen">Einstellungen</Link>
           </nav>
         </div>
       </header>
@@ -55,8 +59,15 @@ export default function Startseite() {
                 Zuhause.
               </p>
               <div className="hero-cta">
-                <button className="btn btn-primary">Jetzt starten</button>
-                <a className="btn btn-ghost" href="#funktionen">Mehr erfahren</a>
+                <Link className="btn btn-primary" to="/aufgaben">Jetzt starten</Link>
+                <button
+                  className="btn btn-ghost"
+                  onClick={() =>
+                    document.getElementById('funktionen')?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                >
+                  Mehr erfahren
+                </button>
               </div>
             </div>
 
@@ -90,11 +101,11 @@ export default function Startseite() {
             </p>
             <div className="karten">
               {funktionen.map((f) => (
-                <article className="karte" key={f.titel}>
+                <Link className="karte" to={f.link} key={f.titel}>
                   <div className="karte-icon" aria-hidden="true">{f.icon}</div>
                   <h3>{f.titel}</h3>
                   <p>{f.text}</p>
-                </article>
+                </Link>
               ))}
             </div>
           </div>

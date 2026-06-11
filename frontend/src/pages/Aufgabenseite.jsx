@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './Aufgabenseite.css'
 
 const WOCHENTAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
@@ -53,17 +54,14 @@ export default function Aufgabenseite() {
       {/* Kopfzeile */}
       <header className="kopf">
         <div className="container kopf-inner">
-          <a className="logo" href="#">
+          <Link className="logo" to="/">
             <span className="logo-icon" aria-hidden="true">🏠</span>
             <span>Haushalthelfer</span>
-          </a>
-          <nav className="nav">
-            {/*<Link to="/aufgaben">Aufgaben</Link>  */} 
-            {/*<Link to="/aufgaben">Mitbewohner</Link>  */}
-            {/*<Link to="/aufgaben">Einstellungen</Link>  */}        
-            <a href="#">Aufgaben</a>
-            <a href="#">Mitbewohner</a>          
-            <a href="#">Einstellungen</a>
+          </Link>
+          <nav className="nav">       
+            <Link to="/aufgaben">Aufgaben</Link>
+            <Link to="/mitbewohner">Mitbewohner</Link>          
+            <Link to="/einstellungen">Einstellungen</Link>
           </nav>
         </div>
       </header>

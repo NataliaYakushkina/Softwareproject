@@ -33,7 +33,7 @@ export default defineConfig({
       },
       // Service Worker auch beim "npm run dev" aktivieren (zum Testen)
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
     }),
   ],
