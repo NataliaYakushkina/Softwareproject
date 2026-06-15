@@ -1,4 +1,6 @@
 const express = require("express");
+require("./schema");
+
 const db = require("./database");
 
 const app = express();
