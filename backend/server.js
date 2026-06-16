@@ -40,6 +40,12 @@ app.put("/household", (req, res) => {
 
     const { name } = req.body;
 
+    if (!name || name.trim() === "") {
+    return res.status(400).json({
+        error: "Name darf nicht leer sein"
+    });
+}
+
     const now = new Date().toISOString();
 
     db.run(
