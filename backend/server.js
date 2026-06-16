@@ -36,6 +36,35 @@ app.get("/household", (req, res) => {
 
 });
 
+app.put("/household", (req, res) => {
+
+    const { name } = req.body;
+
+    const now = new Date().toISOString();
+
+    db.run(
+        `
+        UPDATE Household
+        SET name = ?, updatedAt = ?
+        WHERE id = 1
+        `,
+        [name, now],
+        function(err) {
+
+            if (err) {
+                return res.status(500).json({
+                    error: err.message
+                });
+            }
+
+            res.json({
+                message: "Haushalt aktualisiert"
+            });
+        }
+    );
+
+});
+
 app.listen(PORT, () => {
     console.log(`Server läuft auf Port ${PORT}`);
 });
