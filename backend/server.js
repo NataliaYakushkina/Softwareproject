@@ -17,6 +17,25 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/household", (req, res) => {
+
+    db.get(
+        "SELECT * FROM Household LIMIT 1",
+        [],
+        (err, row) => {
+
+            if (err) {
+                return res.status(500).json({
+                    error: err.message
+                });
+            }
+
+            res.json(row);
+        }
+    );
+
+});
+
 app.listen(PORT, () => {
     console.log(`Server läuft auf Port ${PORT}`);
 });
