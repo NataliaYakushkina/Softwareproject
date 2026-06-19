@@ -1,6 +1,18 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import './Einstellungenseite.css'
 
-export default function EinstellungenPage() {
+export default function Einstellungenseite() {
+  const [name, setName] = useState('Mein Haushalt')
+  const [gespeichert, setGespeichert] = useState(false)
+
+  function speichern(e) {
+    e.preventDefault()
+    if (!name.trim()) return
+    // Spaeter: an das Backend senden
+    setGespeichert(true)
+  }
+
   return (
     <div className="seite">
       {/* Kopfzeile */}
@@ -18,13 +30,31 @@ export default function EinstellungenPage() {
         </div>
       </header>
 
-      <main
-        className="container"
-        style={{ flex: 1, padding: '64px 24px', textAlign: 'center' }}
-      >
-        <div style={{ fontSize: '3rem' }} aria-hidden="true">⚙️</div>
-        <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', marginTop: 8 }}>Einstellungen</h1>
-        <p style={{ color: 'var(--color-muted)', marginTop: 8 }}>Diese Seite kommt bald.</p>
+      <main className="container einstellungen-main">
+        <h1 className="einstellungen-titel">Einstellungen</h1>
+        <p className="einstellungen-lead">Passe die Einstellungen deines Haushalts an.</p>
+
+        <form className="einstellung-karte" onSubmit={speichern}>
+          <h2>Haushalt</h2>
+          <div className="einstellung-feld">
+            <label htmlFor="hausname">Haushaltsname</label>
+            <input
+              id="hausname"
+              className="feld"
+              type="text"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value)
+                setGespeichert(false)
+              }}
+              placeholder="z. B. WG Sonnenallee"
+            />
+          </div>
+          <div className="einstellung-aktionen">
+            <button type="submit" className="btn btn-primary">Speichern</button>
+            {gespeichert && <span className="gespeichert">Gespeichert</span>}
+          </div>
+        </form>
       </main>
 
       {/* Fußzeile */}

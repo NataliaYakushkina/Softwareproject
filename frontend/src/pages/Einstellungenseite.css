@@ -1,0 +1,54 @@
+
+.einstellungen-main {
+  flex: 1;
+  padding-top: 40px;
+  padding-bottom: 64px;
+}
+.einstellungen-titel {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  letter-spacing: -0.01em;
+}
+.einstellungen-lead {
+  color: var(--color-muted);
+  margin-top: 6px;
+}
+
+.einstellung-karte {
+  margin-top: 28px;
+  max-width: 520px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.einstellung-karte h2 {
+  font-size: 1.15rem;
+  margin-bottom: 16px;
+}
+
+.einstellung-feld {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.einstellung-feld label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.einstellung-feld .feld {
+  width: 100%;
+}
+
+.einstellung-aktionen {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.gespeichert {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
