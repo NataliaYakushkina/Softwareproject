@@ -116,7 +116,7 @@ export default function Aufgabenseite() {
 
         {/* Liste der Aufgaben */}
         {sichtbar.length === 0 ? (
-          <p className="leer">Keine Aufgaben am {VOLLE_NAMEN[tag]}. Erstelle eine neue! 🎉</p>
+          <p className="leer">Keine Aufgaben am {VOLLE_NAMEN[tag]}. Erstelle eine neue!</p>
         ) : (
           <ul className="aufgaben-liste">
             {sichtbar.map((a) => (
