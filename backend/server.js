@@ -3,6 +3,7 @@ require("./schema");
 
 const db = require("./database");
 const initializeDatabase = require("./init");
+const memberController = require("./member-controller");
 
 const app = express();
 const PORT = 3000;
@@ -15,6 +16,18 @@ app.get("/", (req, res) => {
     res.json({
         message: "backend funktioniert"
     });
+});
+
+app.get("/members", (req, res) => {
+    memberController.getMembers(req, res);
+});
+
+app.post("/members", (req, res) => {
+    memberController.createMember(req, res);
+});
+
+app.delete("/members/:id", (req, res) => {
+    memberController.deleteMember(req, res);
 });
 
 app.get("/household", (req, res) => {
