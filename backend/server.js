@@ -4,6 +4,7 @@ require("./schema");
 const db = require("./database");
 const initializeDatabase = require("./init");
 const memberController = require("./member-controller");
+const taskController = require("./task-controller");
 
 const app = express();
 const PORT = 3000;
@@ -29,6 +30,28 @@ app.post("/members", (req, res) => {
 app.delete("/members/:id", (req, res) => {
     memberController.deleteMember(req, res);
 });
+
+
+app.get("/tasks", (req, res) => {
+    taskController.getTasks(req, res);
+});
+
+app.post("/tasks", (req, res) => {
+    taskController.createTask(req, res);
+});
+
+app.put("/tasks/:id", (req, res) => {
+    taskController.updateTask(req, res);
+});
+
+app.patch("/tasks/:id/status", (req, res) => {
+    taskController.updateTaskStatus(req, res);
+});
+
+app.delete("/tasks/:id", (req, res) => {
+    taskController.deleteTask(req, res);
+});
+
 
 app.get("/household", (req, res) => {
 
