@@ -6,6 +6,14 @@ class TaskController {
 
         const week = req.query.week;
 
+        const weekPattern = /^\d{4}-W\d{2}$/;
+
+        if (week && !weekPattern.test(week)) {
+            return res.status(400).json({
+                error: "Ungültiges Wochenformat. Beispiel: 2026-W24"
+            });
+        }
+
         if (week) {
 
             taskRepository.getByWeek(week, (err, rows) => {
