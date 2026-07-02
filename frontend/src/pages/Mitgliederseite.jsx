@@ -1,42 +1,58 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './Mitgliederseite.css'
-
-const WOCHENTAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
-
-// Beispiel-Aufgaben der Woche
-const AUFGABEN = [
-  { id: 1, titel: 'Müll rausbringen', person: 'Max', tag: 'Mo' },
-  { id: 2, titel: 'Wäsche waschen', person: 'Tom', tag: 'Di' },
-  { id: 3, titel: 'Bad putzen', person: 'Lena', tag: 'Mi' },
-  { id: 4, titel: 'Einkaufen', person: 'Max', tag: 'Mi' },
-  { id: 5, titel: 'Küche wischen', person: 'Anna', tag: 'Fr' },
-  { id: 6, titel: 'Staubsaugen', person: 'Lena', tag: 'Sa' },
-]
+import { getHaushalt, getMitglieder, createMitglied, deleteMitglied } from '../api.js'
 
 export default function Mitgliederseite() {
-  const [mitglieder, setMitglieder] = useState(['Lena', 'Max', 'Anna', 'Tom'])
+  const [mitglieder, setMitglieder] = useState([])
+  const [haushaltId, setHaushaltId] = useState(null)
+  const [laden, setLaden] = useState(true)
+  const [fehler, setFehler] = useState('')
   const [formOffen, setFormOffen] = useState(false)
   const [name, setName] = useState('')
 
-  function hinzufuegen(e) {
+  // Beim Öffnen der Seite: Haushalt + Mitglieder vom Backend laden.
+  useEffect(() => {
+    async function ladeDaten() {
+      try {
+        const [haushalt, liste] = await Promise.all([getHaushalt(), getMitglieder()])
+        setHaushaltId(haushalt?.id ?? null)
+        setMitglieder(liste)
+      } catch {
+        setFehler('Daten konnten nicht geladen werden. Läuft das Backend?')
+      } finally {
+        setLaden(false)
+      }
+    }
+    ladeDaten()
+  }, [])
+
+  async function hinzufuegen(e) {
     e.preventDefault()
     const neu = name.trim()
-    if (!neu || mitglieder.includes(neu)) return
-    setMitglieder([...mitglieder, neu])
-    setName('')
-    setFormOffen(false)
+    if (!neu) return
+    if (mitglieder.some((m) => m.name === neu)) {
+      setFehler('Dieses Mitglied gibt es schon.')
+      return
+    }
+    try {
+      const erstellt = await createMitglied(neu, haushaltId)
+      setMitglieder([...mitglieder, erstellt])
+      setName('')
+      setFormOffen(false)
+      setFehler('')
+    } catch {
+      setFehler('Mitglied konnte nicht gespeichert werden.')
+    }
   }
 
-  function entfernen(m) {
-    setMitglieder(mitglieder.filter((x) => x !== m))
-  }
-
-  // Aufgaben einer Person, sortiert nach Wochentag (Mo -> So)
-  function aufgabenVon(m) {
-    return AUFGABEN.filter((a) => a.person === m).sort(
-      (a, b) => WOCHENTAGE.indexOf(a.tag) - WOCHENTAGE.indexOf(b.tag),
-    )
+  async function entfernen(id) {
+    try {
+      await deleteMitglied(id)
+      setMitglieder(mitglieder.filter((m) => m.id !== id))
+    } catch {
+      setFehler('Mitglied konnte nicht gelöscht werden.')
+    }
   }
 
   return (
@@ -50,7 +66,7 @@ export default function Mitgliederseite() {
           </Link>
           <nav className="nav">
             <Link to="/aufgaben">Aufgaben</Link>
-            <Link to="/mitbewohner">Mitbewohner</Link>          
+            <Link to="/mitbewohner">Mitbewohner</Link>
             <Link to="/einstellungen">Einstellungen</Link>
           </nav>
         </div>
@@ -59,8 +75,10 @@ export default function Mitgliederseite() {
       <main className="container mitglieder-main">
         <h1 className="mitglieder-titel">Mitbewohner</h1>
         <p className="mitglieder-lead">
-          Wer wohnt im Haushalt — und welche Aufgaben hat jede Person diese Woche?
+          Wer wohnt im Haushalt? Mitbewohner hinzufügen oder entfernen.
         </p>
+
+        {fehler && <p className="fehler" style={{ color: '#b91c1c' }}>{fehler}</p>}
 
         {/* Kopf mit "Neues Mitglied" */}
         <div className="listen-kopf">
@@ -85,47 +103,34 @@ export default function Mitgliederseite() {
           </form>
         )}
 
-        {/* Liste der Mitglieder mit ihren Wochen-Aufgaben */}
-        <div className="mitglied-liste">
-          {mitglieder.map((m) => {
-            const aufgaben = aufgabenVon(m)
-            return (
-              <article className="mitglied" key={m}>
+        {/* Liste der Mitglieder */}
+        {laden ? (
+          <p className="leer-text">Lädt…</p>
+        ) : mitglieder.length === 0 ? (
+          <p className="leer-text">Noch keine Mitbewohner. Füge den ersten hinzu!</p>
+        ) : (
+          <div className="mitglied-liste">
+            {mitglieder.map((m) => (
+              <article className="mitglied" key={m.id}>
                 <div className="mitglied-kopf">
                   <div className="mitglied-name">
-                    <span className="avatar" aria-hidden="true">{m[0]}</span>
-                    <span>{m}</span>
+                    <span className="avatar" aria-hidden="true">{m.name[0]}</span>
+                    <span>{m.name}</span>
                   </div>
                   <div className="mitglied-rechts">
-                    <span className="anzahl">
-                      {aufgaben.length} Aufgabe{aufgaben.length === 1 ? '' : 'n'}
-                    </span>
                     <button
                       className="loeschen"
-                      onClick={() => entfernen(m)}
-                      aria-label={`${m} entfernen`}
+                      onClick={() => entfernen(m.id)}
+                      aria-label={`${m.name} entfernen`}
                     >
                       ×
                     </button>
                   </div>
                 </div>
-
-                {aufgaben.length === 0 ? (
-                  <p className="leer-text">Keine Aufgaben diese Woche.</p>
-                ) : (
-                  <ul className="mitglied-aufgaben">
-                    {aufgaben.map((a) => (
-                      <li key={a.id}>
-                        <span className="tag-badge">{a.tag}</span>
-                        <span className="aufgabe-name">{a.titel}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
               </article>
-            )
-          })}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
 
       {/* Fußzeile */}
