@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 require("./schema");
 
 const db = require("./database");
@@ -9,6 +10,7 @@ const taskController = require("./task-controller");
 const app = express();
 const PORT = 3000;
 
+app.use(cors());
 app.use(express.json());
 
 initializeDatabase();
