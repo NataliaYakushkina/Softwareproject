@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './Startseite.css'
+import { getAufgaben, getMitglieder } from '../api.js'
+import { aktuelleWoche } from '../datum.js'
 
 const funktionen = [
   {
@@ -8,7 +11,7 @@ const funktionen = [
     link: '/aufgaben',
     text: 'Wer macht was? Aufgaben erstellen, einem Mitbewohner zuweisen und abhaken.',
   },
-  
+
   {
     icon: '👥',
     titel: 'Haushalt teilen',
@@ -26,6 +29,33 @@ const funktionen = [
 
 
 export default function Startseite() {
+  const [aufgaben, setAufgaben] = useState([])
+  const [mitglieder, setMitglieder] = useState([])
+  const [geladen, setGeladen] = useState(false)
+
+  // Aufgaben der aktuellen Woche + Mitglieder für die Vorschau-Karte laden.
+  useEffect(() => {
+    Promise.all([getAufgaben(aktuelleWoche()), getMitglieder()])
+      .then(([a, m]) => {
+        setAufgaben(a)
+        setMitglieder(m)
+      })
+      .catch(() => {
+        // Läuft das Backend nicht, bleibt die Karte einfach leer (kein Fehler auf der Startseite).
+      })
+      .finally(() => setGeladen(true))
+  }, [])
+
+  const erledigt = aufgaben.filter((a) => a.status === 'done').length
+  const gesamt = aufgaben.length
+  const prozent = gesamt ? Math.round((erledigt / gesamt) * 100) : 0
+  const sichtbar = aufgaben.slice(0, 4)
+
+  function nameVon(id) {
+    const m = mitglieder.find((x) => x.id === id)
+    return m ? m.name : ''
+  }
+
   return (
     <div className="seite">
       {/* Kopfzeile */}
@@ -35,9 +65,9 @@ export default function Startseite() {
             <span className="logo-icon" aria-hidden="true">🏠</span>
             <span>Haushalthelfer</span>
           </Link>
-          <nav className="nav">       
+          <nav className="nav">
             <Link to="/aufgaben">Aufgaben</Link>
-            <Link to="/mitbewohner">Mitbewohner</Link>          
+            <Link to="/mitbewohner">Mitbewohner</Link>
             <Link to="/einstellungen">Einstellungen</Link>
           </nav>
         </div>
@@ -71,23 +101,51 @@ export default function Startseite() {
               </div>
             </div>
 
-            <div className="hero-card" aria-hidden="true">
+            {/* Vorschau-Karte: echte Aufgaben der aktuellen Woche */}
+            <div className="hero-card">
               <div className="card-head">
-                <span className="dot dot-r"></span>
-                <span className="dot dot-y"></span>
-                <span className="dot dot-g"></span>
-                <span className="card-title">Heute zu erledigen</span>
+                <span className="dot dot-r" aria-hidden="true"></span>
+                <span className="dot dot-y" aria-hidden="true"></span>
+                <span className="dot dot-g" aria-hidden="true"></span>
+                <span className="card-title">Diese Woche</span>
               </div>
-              <ul className="todo">
-                <li className="done"><span className="check">✓</span> Müll rausbringen (Tom)</li>
-                <li className="done"><span className="check">✓</span> Spülmaschine ausräumen (Lena)</li>
-                <li><span className="check open"></span> Einkaufen — 4 Artikel (Max)</li>
-                <li><span className="check open"></span> Bad putzen (Lena)</li>
-              </ul>
-              <div className="card-foot">
-                <span className="fortschritt-text">2 von 4 erledigt</span>
-                <div className="balken"><div className="balken-fill"></div></div>
-              </div>
+
+              {gesamt === 0 ? (
+                <ul className="todo">
+                  <li>
+                    <span className="check open" aria-hidden="true"></span>
+                    {geladen ? 'Noch keine Aufgaben — leg direkt los!' : 'Lädt…'}
+                  </li>
+                </ul>
+              ) : (
+                <>
+                  <ul className="todo">
+                    {sichtbar.map((a) => {
+                      const person = nameVon(a.assignedMemberId)
+                      return (
+                        <li key={a.id} className={a.status === 'done' ? 'done' : undefined}>
+                          <span
+                            className={'check' + (a.status === 'done' ? '' : ' open')}
+                            aria-hidden="true"
+                          >
+                            {a.status === 'done' ? '✓' : ''}
+                          </span>
+                          {a.title}{person ? ` (${person})` : ''}
+                        </li>
+                      )
+                    })}
+                    {gesamt > sichtbar.length && (
+                      <li className="fortschritt-text">… und {gesamt - sichtbar.length} weitere</li>
+                    )}
+                  </ul>
+                  <div className="card-foot">
+                    <span className="fortschritt-text">{erledigt} von {gesamt} erledigt</span>
+                    <div className="balken">
+                      <div className="balken-fill" style={{ width: prozent + '%' }}></div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </section>

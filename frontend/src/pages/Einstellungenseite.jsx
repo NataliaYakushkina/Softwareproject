@@ -1,16 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './Einstellungenseite.css'
+import { getHaushalt, updateHaushalt } from '../api.js'
 
 export default function Einstellungenseite() {
-  const [name, setName] = useState('Mein Haushalt')
+  const [name, setName] = useState('')
   const [gespeichert, setGespeichert] = useState(false)
+  const [fehler, setFehler] = useState('')
 
-  function speichern(e) {
+  // Aktuellen Haushaltsnamen vom Backend laden.
+  useEffect(() => {
+    getHaushalt()
+      .then((haushalt) => setName(haushalt?.name ?? ''))
+      .catch(() => setFehler('Haushalt konnte nicht geladen werden. Läuft das Backend?'))
+  }, [])
+
+  async function speichern(e) {
     e.preventDefault()
     if (!name.trim()) return
-    // Spaeter: an das Backend senden
-    setGespeichert(true)
+    try {
+      await updateHaushalt(name.trim())
+      setGespeichert(true)
+      setFehler('')
+    } catch {
+      setFehler('Speichern fehlgeschlagen.')
+    }
   }
 
   return (
@@ -33,6 +47,8 @@ export default function Einstellungenseite() {
       <main className="container einstellungen-main">
         <h1 className="einstellungen-titel">Einstellungen</h1>
         <p className="einstellungen-lead">Passe die Einstellungen deines Haushalts an.</p>
+
+        {fehler && <p className="fehler" style={{ color: '#b91c1c' }}>{fehler}</p>}
 
         <form className="einstellung-karte" onSubmit={speichern}>
           <h2>Haushalt</h2>
