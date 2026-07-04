@@ -7,6 +7,12 @@ const initializeDatabase = require("./init");
 const memberController = require("./member-controller");
 const taskController = require("./task-controller");
 
+const fairness = require("./fairness");
+
+fairness.getSuggestion((err, member) => {
+    console.log(member);
+});
+
 const app = express();
 const PORT = 3000;
 
