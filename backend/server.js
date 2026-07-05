@@ -9,10 +9,6 @@ const taskController = require("./task-controller");
 
 const fairness = require("./fairness");
 
-fairness.getSuggestion((err, member) => {
-    console.log(member);
-});
-
 const app = express();
 const PORT = 3000;
 
@@ -58,6 +54,29 @@ app.patch("/tasks/:id/status", (req, res) => {
 
 app.delete("/tasks/:id", (req, res) => {
     taskController.deleteTask(req, res);
+});
+
+
+app.get("/fairness/suggestion", (req, res) => {
+
+    fairness.getSuggestion((err, member) => {
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        if (!member) {
+            return res.status(404).json({
+                error: "Kein Haushaltsmitglied gefunden"
+            });
+        }
+
+        res.json(member);
+
+    });
+
 });
 
 
