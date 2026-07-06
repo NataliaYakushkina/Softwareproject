@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import './Aufgabenseite.css'
 import {
@@ -11,6 +11,26 @@ import {
   deleteAufgabe,
 } from '../api.js'
 import { aktuelleWoche } from '../datum.js'
+
+// Einfacher Verteilungs-Vorschlag: schlägt die Person mit den wenigsten
+// zugewiesenen Aufgaben (in der aktuellen Woche) vor, damit die Arbeit fairer
+// verteilt wird. Gibt das Mitglied zurück oder null, wenn es keine gibt.
+function personMitWenigstenAufgaben(mitglieder, aufgaben) {
+  if (mitglieder.length === 0) return null
+  // Zähler für jedes Mitglied bei 0 starten.
+  const anzahl = new Map(mitglieder.map((m) => [m.id, 0]))
+  for (const a of aufgaben) {
+    if (anzahl.has(a.assignedMemberId)) {
+      anzahl.set(a.assignedMemberId, anzahl.get(a.assignedMemberId) + 1)
+    }
+  }
+  // Kleinste Aufgabenzahl bestimmen und alle Mitglieder sammeln, die dort
+  // gleichauf liegen.
+  const minimum = Math.min(...mitglieder.map((m) => anzahl.get(m.id)))
+  const gleichauf = mitglieder.filter((m) => anzahl.get(m.id) === minimum)
+  // Bei Gleichstand zufällig eine Person wählen — so wird niemand bevorzugt.
+  return gleichauf[Math.floor(Math.random() * gleichauf.length)]
+}
 
 export default function Aufgabenseite() {
   const [woche, setWoche] = useState(aktuelleWoche())
@@ -102,6 +122,23 @@ export default function Aufgabenseite() {
     }
   }
 
+  // Vorgeschlagene Person (wenigste Aufgaben) für die aktuelle Woche.
+  // useMemo hält den Vorschlag stabil und würfelt bei Gleichstand nur neu,
+  // wenn sich Mitglieder oder Aufgaben tatsächlich ändern (kein Flackern).
+  const vorschlag = useMemo(
+    () => personMitWenigstenAufgaben(mitglieder, aufgaben),
+    [mitglieder, aufgaben],
+  )
+
+  // Formular öffnen/schließen. Beim Öffnen die vorgeschlagene Person
+  // voreinstellen — der Nutzer kann im Dropdown jederzeit jemand anderen wählen.
+  function formularUmschalten() {
+    if (!formOffen) {
+      setZustaendig(vorschlag ? String(vorschlag.id) : '')
+    }
+    setFormOffen(!formOffen)
+  }
+
   return (
     <div className="seite">
       {/* Kopfzeile */}
@@ -142,7 +179,7 @@ export default function Aufgabenseite() {
           <h2>
             {aufgaben.length} Aufgabe{aufgaben.length === 1 ? '' : 'n'} diese Woche
           </h2>
-          <button className="btn btn-primary btn-sm" onClick={() => setFormOffen(!formOffen)}>
+          <button className="btn btn-primary btn-sm" onClick={formularUmschalten}>
             {formOffen ? 'Abbrechen' : '+ Neue Aufgabe'}
           </button>
         </div>
@@ -165,6 +202,21 @@ export default function Aufgabenseite() {
               ))}
             </select>
             <button type="submit" className="btn btn-primary">Hinzufügen</button>
+
+            {vorschlag && (
+              <p className="vorschlag-hinweis">
+                 Vorschlag: <strong>{vorschlag.name}</strong> hat aktuell die wenigsten Aufgaben.
+                {String(vorschlag.id) !== zustaendig && (
+                  <button
+                    type="button"
+                    className="vorschlag-btn"
+                    onClick={() => setZustaendig(String(vorschlag.id))}
+                  >
+                    Übernehmen
+                  </button>
+                )}
+              </p>
+            )}
           </form>
         )}
 
