@@ -82,3 +82,7 @@ export function updateAufgabeStatus(id, status) {
 export function deleteAufgabe(id) {
   return request(`/tasks/${id}`, { method: 'DELETE' })
 }
+
+export function getFairnessSuggestion() {
+  return request('/fairness/suggestion')
+}
