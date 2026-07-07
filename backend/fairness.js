@@ -17,7 +17,7 @@ class Fairness {
                     return callback(null, null);
                 }
 
-                let bestMember = null;
+                let bestMembers = [];
                 let lowestCompleted = Number.MAX_SAFE_INTEGER;
 
                 let remaining = members.length;
@@ -40,13 +40,16 @@ class Fairness {
 
                             if (row.completed < lowestCompleted) {
                                 lowestCompleted = row.completed;
-                                bestMember = member;
+                                bestMembers = [member];
+                            } else if (row.completed === lowestCompleted) {
+                                bestMembers.push(member);
                             }
 
                             remaining--;
 
                             if (remaining === 0) {
-                                callback(null, bestMember);
+                                const randomIndex = Math.floor(Math.random() * bestMembers.length);
+                                callback(null, bestMembers[randomIndex]);
                             }
 
                         }
