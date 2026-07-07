@@ -9,6 +9,7 @@ import {
   updateAufgabe,
   updateAufgabeStatus,
   deleteAufgabe,
+  getFairnessSuggestion,
 } from '../api.js'
 import { aktuelleWoche } from '../datum.js'
 
@@ -22,6 +23,7 @@ export default function Aufgabenseite() {
   const [formOffen, setFormOffen] = useState(false)
   const [titel, setTitel] = useState('')
   const [zustaendig, setZustaendig] = useState('')
+  const [vorschlag, setVorschlag] = useState(null)
 
   // Mitglieder + Haushalt einmalig laden (für Zuweisung und householdId).
   useEffect(() => {
@@ -44,6 +46,16 @@ export default function Aufgabenseite() {
       .catch(() => setFehler('Aufgaben konnten nicht geladen werden. Läuft das Backend?'))
       .finally(() => setLaden(false))
   }, [woche])
+
+  useEffect(() => {
+  getFairnessSuggestion()
+    .then((mitglied) => {
+      setVorschlag(mitglied)
+    })
+    .catch(() => {
+      setVorschlag(null)
+    })
+}, [aufgaben])
 
   async function hinzufuegen(e) {
     e.preventDefault()
@@ -102,6 +114,14 @@ export default function Aufgabenseite() {
     }
   }
 
+  function formularUmschalten() {
+  if (!formOffen) {
+    setZustaendig(vorschlag ? String(vorschlag.id) : '')
+  }
+
+  setFormOffen(!formOffen)
+}
+
   return (
     <div className="seite">
       {/* Kopfzeile */}
@@ -142,7 +162,7 @@ export default function Aufgabenseite() {
           <h2>
             {aufgaben.length} Aufgabe{aufgaben.length === 1 ? '' : 'n'} diese Woche
           </h2>
-          <button className="btn btn-primary btn-sm" onClick={() => setFormOffen(!formOffen)}>
+          <button className="btn btn-primary btn-sm" onClick={formularUmschalten}>
             {formOffen ? 'Abbrechen' : '+ Neue Aufgabe'}
           </button>
         </div>
@@ -165,6 +185,22 @@ export default function Aufgabenseite() {
               ))}
             </select>
             <button type="submit" className="btn btn-primary">Hinzufügen</button>
+
+            {vorschlag && (
+              <p className="vorschlag-hinweis">
+                Vorschlag: <strong>{vorschlag.name}</strong> hat die wenigsten erledigten Aufgaben.
+
+                {String(vorschlag.id) !== zustaendig && (
+                  <button
+                    type="button"
+                    className="vorschlag-btn"
+                    onClick={() => setZustaendig(String(vorschlag.id))}
+                  >
+                    Übernehmen
+                  </button>
+                )}
+              </p>
+            )}
           </form>
         )}
 

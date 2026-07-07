@@ -29,7 +29,7 @@ class Fairness {
                         SELECT COUNT(*) AS completed
                         FROM Task
                         WHERE assignedMemberId = ?
-                        AND status = 'completed'
+                        AND status = 'done'
                         `,
                         [member.id],
                         (err, row) => {
